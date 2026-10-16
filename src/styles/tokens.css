@@ -1,15 +1,27 @@
-/*
- * Design tokens — the single place colours and type are defined.
- * Values below are neutral placeholders until the references are in.
- */
+/* Design tokens. Palette mirrored in src/theme/palette.js. */
 :root {
-  --color-bg: #0e0e10;
-  --color-fg: #f2f0eb;
-  --color-muted: #8a877f;
-  --color-accent: #c8b38a;
+  --royal: #014baa;
+  --cream: #f8f3f0;
+  --wine: #7f011f;
+  --sand: #f5ebd0;
+  --orange: #ec5e27;
+  --milk: #fdfdf1;
+  --red: #c52b27;
+  --navy: #153b54;
+  --ink: #05080d;
+  --night: #0a1824;
 
-  --font-display: system-ui, sans-serif;
-  --font-body: system-ui, sans-serif;
+  --color-bg: var(--ink);
+  --color-fg: var(--milk);
+  --color-muted: color-mix(in srgb, var(--sand) 62%, transparent);
+  --color-line: color-mix(in srgb, var(--sand) 18%, transparent);
+  --color-accent: var(--red);
+  --color-glow: var(--orange);
 
-  --gutter: clamp(16px, 4vw, 64px);
+  --font-display: 'Pirata One', serif;
+  --font-body: 'Manrope Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-jp: 'Shippori Mincho', serif;
+
+  --gutter: clamp(16px, 3.2vw, 56px);
 }

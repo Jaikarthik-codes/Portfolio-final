@@ -1,31 +1,45 @@
 import * as THREE from 'three';
+import { palette } from '../theme/palette.js';
 
-// Owns the renderer, camera and frame loop. Sections add their own objects to `scene`
-// and register per-frame work with `onUpdate`.
+function detectQuality() {
+  const forced = new URLSearchParams(location.search).get('q');
+  if (forced === 'low' || forced === 'high') return forced;
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
+  const fewCores = (navigator.hardwareConcurrency ?? 8) <= 4;
+  return coarse || fewCores ? 'low' : 'high';
+}
+
+/**
+ * Owns the renderer, camera and frame loop. World modules add objects to `scene`
+ * and register per-frame work with `onUpdate`.
+ *
+ * Camera model: scroll/intro timelines tween `rig.position` and `target`;
+ * pointer parallax offsets the camera inside the rig; the camera always looks at `target`.
+ */
 export class Experience {
-  constructor(canvas, { reducedMotion = false } = {}) {
+  constructor(canvas, { reducedMotion = false, quality = detectQuality() } = {}) {
     this.reducedMotion = reducedMotion;
+    this.quality = quality;
+    this.palette = palette;
     this.scene = new THREE.Scene();
 
-    // Scroll timelines animate the rig; pointer parallax nudges the camera inside it,
-    // so the two never fight over the same property.
     this.rig = new THREE.Group();
-    this.camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-    this.camera.position.z = 8;
+    this.rig.position.set(0, 1.55, 13.5);
+    this.target = new THREE.Vector3(0, 2.6, 0);
+    this.camera = new THREE.PerspectiveCamera(38, 1, 0.1, 600);
     this.rig.add(this.camera);
     this.scene.add(this.rig);
 
-    // Transparent canvas: the page background (from tokens.css) shows through.
-    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    this.renderer.setClearColor(0x000000, 0);
-
-    this.scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-    const key = new THREE.DirectionalLight(0xffffff, 2);
-    key.position.set(3, 4, 5);
-    this.scene.add(key);
+    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+    this.renderer.setClearColor(palette.ink, 1);
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1;
 
     this.pointer = new THREE.Vector2();
+    this.parallax = reducedMotion ? 0 : 1;
     this.updaters = [];
+    this.post = null;
 
     window.addEventListener('resize', () => this.resize());
     window.addEventListener('pointermove', (e) => {
@@ -34,26 +48,42 @@ export class Experience {
     this.resize();
   }
 
+  /** Context handed to every world module's create(). */
+  get ctx() {
+    const { scene, camera, renderer, palette, quality, reducedMotion } = this;
+    return { THREE, scene, camera, renderer, palette, quality, reducedMotion, experience: this };
+  }
+
   onUpdate(fn) {
     this.updaters.push(fn);
   }
 
+  /** Hand rendering over to a post-processing pipeline (see src/fx/post.js). */
+  setPost(post) {
+    this.post = post;
+    this.renderer.toneMapping = THREE.NoToneMapping;
+    this.resize();
+  }
+
   resize() {
     const { innerWidth: width, innerHeight: height } = window;
+    const pixelRatio = Math.min(window.devicePixelRatio, this.quality === 'high' ? 2 : 1.5);
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(pixelRatio);
     this.renderer.setSize(width, height, false);
+    this.post?.setSize(width, height);
   }
 
   update(time, delta) {
-    if (!this.reducedMotion) {
-      const ease = 1 - Math.exp(-delta * 4);
-      this.camera.position.x += (this.pointer.x * 0.3 - this.camera.position.x) * ease;
-      this.camera.position.y += (this.pointer.y * 0.2 - this.camera.position.y) * ease;
-    }
+    const ease = 1 - Math.exp(-delta * 3);
+    this.camera.position.x += (this.pointer.x * 0.35 * this.parallax - this.camera.position.x) * ease;
+    this.camera.position.y += (this.pointer.y * 0.2 * this.parallax - this.camera.position.y) * ease;
+    this.camera.lookAt(this.target);
 
     for (const fn of this.updaters) fn(time, delta);
-    this.renderer.render(this.scene, this.camera);
+
+    if (this.post) this.post.render(delta);
+    else this.renderer.render(this.scene, this.camera);
   }
 }
