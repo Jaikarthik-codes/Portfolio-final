@@ -1,0 +1,158 @@
+/* Preloader: ink stage, brush ensō around 門, shoji-panel exit. Motion lives in src/ui/loader.js. */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  display: grid;
+  place-items: center;
+  color: var(--milk);
+}
+
+.loader__panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.1%; /* overlap by a hair so no seam of scene leaks through before the exit */
+  background-color: var(--ink);
+  /* Faint kumiko lattice so the halves read as sliding shoji once they move. */
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      transparent 0 calc(25% - 1px),
+      color-mix(in srgb, var(--sand) 3.5%, transparent) calc(25% - 1px) 25%
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 calc(16.666% - 1px),
+      color-mix(in srgb, var(--sand) 3.5%, transparent) calc(16.666% - 1px) 16.666%
+    ),
+    radial-gradient(120% 90% at 50% 50%, var(--night) 0%, var(--ink) 70%);
+  will-change: transform;
+}
+
+.loader__panel--left {
+  left: 0;
+  background-position: right top;
+  box-shadow: inset -1px 0 0 color-mix(in srgb, var(--sand) 6%, transparent);
+}
+
+.loader__panel--right {
+  right: 0;
+  background-position: left top;
+  box-shadow: inset 1px 0 0 color-mix(in srgb, var(--sand) 6%, transparent);
+}
+
+/* Red seam: one hairline per panel edge, so it splits and rides each door as they open. */
+.loader__edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--red);
+  box-shadow:
+    0 0 6px 0 var(--red),
+    0 0 22px 2px color-mix(in srgb, var(--orange) 55%, transparent);
+  transform: scaleY(0);
+  opacity: 0;
+}
+
+.loader__panel--left .loader__edge {
+  right: 0;
+}
+
+.loader__panel--right .loader__edge {
+  left: 0;
+}
+
+.loader__flash {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: min(36vw, 520px);
+  translate: -50% 0;
+  background: radial-gradient(50% 60% at 50% 50%, color-mix(in srgb, var(--red) 34%, transparent), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader__stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: clamp(22px, 3.4vh, 36px);
+}
+
+.loader__mark {
+  position: relative;
+  width: clamp(220px, 38vh, 380px);
+  aspect-ratio: 1;
+}
+
+.loader__enso {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.loader__enso-body {
+  fill: var(--red);
+}
+
+.loader__enso-guide {
+  fill: none;
+  stroke: color-mix(in srgb, var(--sand) 11%, transparent);
+  stroke-width: 0.75;
+}
+
+.loader__enso-tick {
+  stroke: color-mix(in srgb, var(--sand) 26%, transparent);
+  stroke-width: 0.75;
+}
+
+.loader__kanji {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: calc(clamp(220px, 38vh, 380px) * 0.4);
+  line-height: 1;
+  /* --p (load progress, set by loader.js) brings the gate up from the ink as the ensō closes */
+  color: color-mix(in srgb, var(--milk) calc(30% + var(--p, 0) * 70%), var(--ink));
+  /* optical centre: Mincho glyphs sit slightly high in their em box */
+  padding-top: 0.04em;
+  opacity: 0;
+}
+
+.loader__count {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35em;
+  color: var(--sand);
+  font-size: var(--fs-small);
+  letter-spacing: 0.24em;
+  font-variant-numeric: tabular-nums;
+}
+
+.loader__pct {
+  color: var(--color-dim);
+}
+
+.loader__name {
+  position: absolute;
+  left: 50%;
+  bottom: var(--edge-y);
+  translate: -50% 0;
+  color: var(--color-dim);
+  letter-spacing: 0.32em;
+  white-space: nowrap;
+}
+
+.loader.is-done {
+  display: none;
+}

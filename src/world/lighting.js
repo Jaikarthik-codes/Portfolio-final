@@ -17,8 +17,8 @@ export default function createLighting({ scene, palette }) {
   group.add(hemi);
 
   // Moon key light from behind the gate: rims everything facing the camera.
-  const moonLight = new THREE.DirectionalLight(palette.red, 3);
-  moonLight.position.set(0, 18, -40);
+  const moonLight = new THREE.DirectionalLight(palette.red, 2.0);
+  moonLight.position.set(0, 7, -40); // low, so it rims silhouettes instead of flooding the ground
   group.add(moonLight, moonLight.target);
 
   // Softened royal-blue fill from the front-left so faces toward camera aren't pure black.

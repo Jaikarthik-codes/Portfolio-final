@@ -4,4 +4,3 @@ import '@fontsource-variable/manrope';
 import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/500.css';
 import '@fontsource/shippori-mincho/500.css';
-import '@fontsource/shippori-mincho/700.css';

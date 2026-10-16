@@ -1,26 +1,189 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="is-loading">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio</title>
+    <title>Mylapur Jai Karthik — Aspiring AI Developer</title>
+    <meta
+      name="description"
+      content="Portfolio of Mylapur Jai Karthik, an aspiring AI developer working across machine learning, LLM apps and computer vision."
+    />
+    <meta name="theme-color" content="#05080d" />
+    <style>
+      /* Critical: ink from the first paint, and nothing unstyled peeking out before the stylesheet lands. */
+      html { background: #05080d; }
+      html.is-loading .hud,
+      html.is-loading .content { visibility: hidden; }
+    </style>
+    <noscript>
+      <style>
+        .loader, .cursor { display: none; }
+        html.is-loading .hud, html.is-loading .content { visibility: visible; }
+      </style>
+    </noscript>
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
     <canvas class="webgl" aria-hidden="true"></canvas>
 
-    <main class="content">
-      <!-- Placeholder: replaced once the hero is designed -->
-      <section class="section" id="hero" data-section="hero">
-        <p class="eyebrow">Placeholder</p>
-        <h1 class="display">Name Here</h1>
-        <p class="lede">Role / one-line intro goes here.</p>
+    <!-- Preloader. Exit: the ink splits into two shoji panels that slide apart. -->
+    <div
+      class="loader"
+      role="progressbar"
+      aria-label="Loading"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="0"
+      data-lenis-prevent
+    >
+      <div class="loader__panel loader__panel--left" aria-hidden="true"><span class="loader__edge"></span></div>
+      <div class="loader__panel loader__panel--right" aria-hidden="true"><span class="loader__edge"></span></div>
+      <div class="loader__flash" aria-hidden="true"></div>
+      <div class="loader__stage" aria-hidden="true">
+        <div class="loader__mark">
+          <svg class="loader__enso" viewBox="0 0 400 400"></svg>
+          <span class="loader__kanji" lang="ja">門</span>
+        </div>
+        <p class="loader__count"><span class="loader__digits">000</span><span class="loader__pct">%</span></p>
+      </div>
+      <p class="loader__name" aria-hidden="true">Mylapur Jai Karthik</p>
+    </div>
+
+    <!-- Persistent HUD: stays fixed over every section. -->
+    <div class="hud">
+      <header class="hud__top">
+        <a class="brand" href="#hero" aria-label="Mylapur Jai Karthik, back to the top">
+          <svg class="brand__seal" viewBox="0 0 48 48" aria-hidden="true">
+            <defs>
+              <filter id="seal-ink" x="-10%" y="-10%" width="120%" height="120%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="7" result="warp" />
+                <feDisplacementMap in="SourceGraphic" in2="warp" scale="2.4" xChannelSelector="R" yChannelSelector="G" result="rough" />
+                <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" seed="3" result="speck" />
+                <feColorMatrix in="speck" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  14 0 0 0 -9.4" result="holes" />
+                <feComposite in="rough" in2="holes" operator="out" />
+              </filter>
+            </defs>
+            <g filter="url(#seal-ink)">
+              <rect class="brand__seal-body" x="4" y="4" width="40" height="40" rx="1.5" />
+              <text class="brand__seal-text" x="24.5" y="33.5" text-anchor="middle">JK</text>
+            </g>
+          </svg>
+          <span class="brand__name" aria-hidden="true">
+            <span class="brand__line"><span>Jai Karthik</span></span>
+            <span class="brand__line"><span>AI Developer</span></span>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Primary">
+          <ul class="nav__list">
+            <li class="nav__item"><a class="nav__link" href="#origin"><span class="nav__text">About</span></a></li>
+            <li class="nav__item"><a class="nav__link" href="#arsenal"><span class="nav__text">Arsenal</span></a></li>
+            <li class="nav__item"><a class="nav__link" href="#missions"><span class="nav__text">Missions</span></a></li>
+            <li class="nav__item"><a class="nav__link" href="#contact"><span class="nav__text">Contact</span></a></li>
+          </ul>
+        </nav>
+
+        <div class="hud__cta">
+          <a class="cta" href="#contact" data-magnetic>
+            <span class="cta__fill" aria-hidden="true"></span>
+            <span class="cta__label" data-magnetic-inner>
+              <span class="cta__diamond" aria-hidden="true"></span>
+              <span>Let’s talk</span>
+            </span>
+          </a>
+        </div>
+      </header>
+
+      <ol class="hud__ticks ticks" aria-hidden="true">
+        <li class="ticks__tick is-active"></li>
+        <li class="ticks__tick"></li>
+        <li class="ticks__tick"></li>
+        <li class="ticks__tick"></li>
+        <li class="ticks__tick"></li>
+      </ol>
+
+      <div class="hud__bottom-left">
+        <ol class="counter" aria-label="Sections">
+          <li class="counter__item is-active" aria-current="step">
+            <span class="counter__row"><span class="counter__num">01</span><span class="counter__rule" aria-hidden="true"></span><span class="counter__label">The Gate</span></span>
+          </li>
+          <li class="counter__item">
+            <span class="counter__row"><span class="counter__num">02</span><span class="counter__rule" aria-hidden="true"></span><span class="counter__label">Origin</span></span>
+          </li>
+          <li class="counter__item">
+            <span class="counter__row"><span class="counter__num">03</span><span class="counter__rule" aria-hidden="true"></span><span class="counter__label">Arsenal</span></span>
+          </li>
+          <li class="counter__item">
+            <span class="counter__row"><span class="counter__num">04</span><span class="counter__rule" aria-hidden="true"></span><span class="counter__label">Missions</span></span>
+          </li>
+          <li class="counter__item">
+            <span class="counter__row"><span class="counter__num">05</span><span class="counter__rule" aria-hidden="true"></span><span class="counter__label">Contract</span></span>
+          </li>
+        </ol>
+
+        <div class="cue" aria-hidden="true">
+          <span class="cue__line"></span>
+          <span class="cue__label">Scroll to enter the gate</span>
+        </div>
+      </div>
+
+      <aside class="hud__status status" aria-label="Availability">
+        <p class="status__head"><span class="status__dot" aria-hidden="true"></span>Open to internships</p>
+        <p class="status__line" aria-hidden="true">
+          <span class="status__prompt">&gt;</span><span class="status__text">machine learning</span><span class="status__caret"></span>
+        </p>
+        <p class="sr-only">Focus areas: machine learning, LLM apps, computer vision, Python and PyTorch.</p>
+      </aside>
+    </div>
+
+    <main id="main" class="content">
+      <section id="hero" class="hero" data-section="1" aria-labelledby="hero-title">
+        <h1 id="hero-title" class="sr-only">Mylapur Jai Karthik — Aspiring AI Developer</h1>
+
+        <div class="hero__inner">
+          <div class="hero__copy">
+            <p class="hero__eyebrow">
+              <span class="hero__eyebrow-text"><span class="hero__index">01</span> — <span class="hero__jp" lang="ja">鳥居</span> / The Gate</span>
+            </p>
+            <h2 class="hero__headline">
+              <span class="hero__line">Zero cursed</span>
+              <span class="hero__line">energy.</span>
+              <span class="hero__line">Infinite</span>
+              <span class="hero__line">curiosity.</span>
+            </h2>
+            <p class="hero__lede">
+              An aspiring AI developer walking through every gate — training models, shipping experiments, and learning
+              the craft one line of code at a time.
+            </p>
+          </div>
+
+          <div class="hero__vertical">
+            <p class="hero__kanji" lang="ja">天与呪縛</p>
+            <span class="hero__vrule" aria-hidden="true"></span>
+            <p class="hero__romaji">Tenyo Jubaku · Heavenly Restriction</p>
+          </div>
+
+          <p class="hero__tagline" aria-hidden="true">
+            <span class="hero__diamond"></span>
+            <span class="hero__tagline-text">Aspiring AI Developer</span>
+            <span class="hero__diamond"></span>
+          </p>
+        </div>
       </section>
 
-      <!-- Placeholder: gives the page something to scroll through -->
-      <section class="section" id="next" data-section="next">
-        <h2 class="display">Next section</h2>
+      <!-- Placeholder chapter so the page scrolls; replaced when Origin is designed. -->
+      <section id="origin" class="chapter" data-section="2" aria-labelledby="origin-title">
+        <div class="chapter__inner">
+          <p class="chapter__eyebrow"><span class="hero__index">02</span> — <span lang="ja">起源</span> / Origin</p>
+          <h2 id="origin-title" class="chapter__title">The story behind the gate.</h2>
+          <p class="chapter__note">Chapter in progress. Coming soon.</p>
+        </div>
       </section>
     </main>
+
+    <div class="grain" aria-hidden="true"></div>
+    <div class="cursor" aria-hidden="true"><span class="cursor__ring"></span><span class="cursor__dot"></span></div>
 
     <script type="module" src="/src/main.js"></script>
   </body>

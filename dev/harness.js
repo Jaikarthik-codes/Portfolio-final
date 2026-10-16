@@ -36,7 +36,7 @@ let names = (q.get('m') ?? '').split(',').filter(Boolean);
 if (names.includes('all')) {
   names = Object.keys(available)
     .map((p) => p.match(/world\/(.+)\.js$/)[1])
-    .filter((n) => n !== 'lighting' && !n.startsWith('_'));
+    .filter((n) => !['lighting', 'util'].includes(n) && !n.startsWith('_'));
 }
 const opts = q.get('opts') ? JSON.parse(q.get('opts')) : {};
 
