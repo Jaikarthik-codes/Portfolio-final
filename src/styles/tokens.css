@@ -1,0 +1,15 @@
+/*
+ * Design tokens — the single place colours and type are defined.
+ * Values below are neutral placeholders until the references are in.
+ */
+:root {
+  --color-bg: #0e0e10;
+  --color-fg: #f2f0eb;
+  --color-muted: #8a877f;
+  --color-accent: #c8b38a;
+
+  --font-display: system-ui, sans-serif;
+  --font-body: system-ui, sans-serif;
+
+  --gutter: clamp(16px, 4vw, 64px);
+}
